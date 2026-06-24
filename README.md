@@ -76,9 +76,9 @@ Obsidian ──HTTPS──► Caddy ──HTTP──► CouchDB
 
 ```bash
 # 必填
-DOMAIN=notes.example.com       # 你的域名（内网填 localhost）
+DOMAIN=notes.yourdomain.com  # 你的域名（内网填 localhost）
 COUCHDB_USER=admin             # 管理员账号
-COUCHDB_PASSWORD=your-password # 管理员密码（务必修改！）
+COUCHDB_PASSWORD=changeme       # 管理员密码（务必修改！）
 
 # 可选
 COUCHDB_DBNAME=obsidian-livesync  # 数据库名
