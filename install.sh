@@ -10,6 +10,7 @@ set -e
 
 # ── 参数解析 ──
 DOMAIN=""
+PORT=""
 COUCHDB_PASSWORD=""
 NEVEREND_PASSWORD=""
 E2EE_PASSPHRASE=""
@@ -19,6 +20,7 @@ INSTALL_DIR="$HOME/neverend"
 while [[ $# -gt 0 ]]; do
     case $1 in
         --domain)       DOMAIN="$2"; NON_INTERACTIVE=true; shift 2 ;;
+        --port)         PORT="$2"; shift 2 ;;
         --password)     COUCHDB_PASSWORD="$2"; NON_INTERACTIVE=true; shift 2 ;;
         --sync-password) NEVEREND_PASSWORD="$2"; shift 2 ;;
         --e2ee)         E2EE_PASSPHRASE="$2"; shift 2 ;;
@@ -29,6 +31,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "选项:"
             echo "  --domain DOMAIN        域名（默认 localhost）"
+            echo "  --port PORT            公网端口（默认 80，80/443 被占用时用 18080）"
             echo "  --password PASSWORD    CouchDB 管理员密码（默认自动生成）"
             echo "  --sync-password PASS   同步用户密码（默认自动生成）"
             echo "  --e2ee PASSPHRASE      端到端加密口令（默认自动生成）"
@@ -41,6 +44,9 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "  # 无交互安装（智能体/脚本用）"
             echo "  curl -fsSL .../install.sh | bash -s -- --domain notes.example.com --auto"
+            echo ""
+            echo "  # 无域名，使用 IP:端口"
+            echo "  curl -fsSL .../install.sh | bash -s -- --port 18080 --auto"
             exit 0
             ;;
         *) shift ;;
@@ -96,6 +102,7 @@ ok "Docker Compose 可用"
 
 # ── Step 2: 配置 ──
 DOMAIN=${DOMAIN:-localhost}
+PORT=${PORT:-80}
 COUCHDB_USER="admin"
 COUCHDB_PASSWORD=${COUCHDB_PASSWORD:-$(gen_password)}
 NEVEREND_USER="obsidian"
@@ -137,6 +144,7 @@ ok "仓库就绪"
 cat > .env << EOF
 # Neverend 配置 — 自动生成
 DOMAIN=$DOMAIN
+NEVEREND_PORT=$PORT
 COUCHDB_USER=$COUCHDB_USER
 COUCHDB_PASSWORD=$COUCHDB_PASSWORD
 COUCHDB_DBNAME=obsidian-livesync
@@ -193,6 +201,7 @@ echo ""
 if [[ "$NON_INTERACTIVE" == "true" ]]; then
     echo "---NEVEREND_OUTPUT_START---"
     echo "DOMAIN=$DOMAIN"
+    echo "PORT=$PORT"
     echo "SETUP_URI=$SETUP_URI"
     echo "URI_PASSPHRASE=$URI_PASS"
     echo "E2EE_PASSPHRASE=$E2EE_PASS"

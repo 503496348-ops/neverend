@@ -27,20 +27,51 @@ curl -fsSL https://raw.githubusercontent.com/503496348-ops/neverend/main/install
 ### 无交互安装（智能体/脚本用）
 
 ```bash
+# 有域名
 curl -fsSL https://raw.githubusercontent.com/503496348-ops/neverend/main/install.sh | bash -s -- --domain notes.yourdomain.com --auto
+
+# 无域名，使用 IP:端口（推荐 18080，已验证国内可访问）
+curl -fsSL https://raw.githubusercontent.com/503496348-ops/neverend/main/install.sh | bash -s -- --port 18080 --auto
 ```
 
 ### 在 Obsidian 中使用
 
+**方法 A：手动配置（推荐，更稳）**
+
 1. 安装插件 **Self-hosted LiveSync**（社区插件市场搜索）
-2. Ctrl/Cmd+P → "Use the copied setup URI"
-3. 粘贴 Setup URI → 输入口令 → 完成！
+2. 打开插件设置，填写以下字段：
+
+| 字段 | 值 |
+|------|-----|
+| Remote Database URI | `http://你的IP:端口` |
+| Username | `user` |
+| Password | `（密码）` |
+| Database Name | `obsidian-livesync` |
+| End-to-End Encryption | `true` |
+| Passphrase | `（E2EE 口令）` |
+
+3. 点击 "Test" 验证连接
+4. 选择 "Join"（加入已有服务器）
+
+**方法 B：Setup URI**
+
+1. Ctrl/Cmd+P → "Use the copied setup URI"
+2. 粘贴 Setup URI → 输入口令 → 完成！
+
+**⚠️ 注意：Setup URI 中的 localhost:5984 必须替换为实际的 IP:端口！**
+
+## 同步策略选择
+
+走到 "Mostly Complete: Decision Required" 界面时：
+- **当前设备有笔记** → "My remote server is already set up. I want to join this device."
+- **当前设备是空的** → 同上
+- **当前设备要初始化服务器** → 第一个选项（会覆盖服务器数据，谨慎！）
 
 ## 架构
 
 ```
-Obsidian ──HTTPS──► Caddy ──HTTP──► CouchDB
-(客户端)  (LiveSync) (SSL反代)     (数据库)
+Obsidian ──HTTP/HTTPS──► Caddy ──HTTP──► CouchDB
+(客户端)    (LiveSync)   (反代)       (数据库)
 ```
 
 所有组件运行在 Docker 中，数据持久化到 Docker Volume。
@@ -50,13 +81,14 @@ Obsidian ──HTTPS──► Caddy ──HTTP──► CouchDB
 编辑 `.env` 文件：
 
 ```bash
-DOMAIN=notes.yourdomain.com  # 你的域名（内网填 localhost）
+DOMAIN=notes.yourdomain.com  # 你的域名（或 IP）
 COUCHDB_USER=admin            # 管理员账号
 COUCHDB_PASSWORD=changeme     # 管理员密码（务必修改！）
 COUCHDB_DBNAME=obsidian-livesync
 E2EE_PASSPHRASE=              # 端到端加密口令（留空自动生成）
 NEVEREND_USER=obsidian        # 同步用户名
 NEVEREND_PASSWORD=            # 同步密码（留空自动生成）
+NEVEREND_PORT=80              # 公网端口（80/443 被占用时用 18080）
 ```
 
 ## 多设备同步
@@ -64,9 +96,102 @@ NEVEREND_PASSWORD=            # 同步密码（留空自动生成）
 在第一台设备配置完成后：
 1. 从 `docker logs neverend-init` 获取 Setup URI
 2. 在新设备的 Obsidian 中安装 LiveSync 插件
-3. 粘贴同一个 Setup URI
+3. 粘贴同一个 Setup URI（或手动配置）
 4. 选择 "Set it up as secondary device"
 5. 自动开始同步！
+
+## 实战踩坑清单
+
+### 🔴 高频踩坑
+
+1. **80/443 端口被占用** → 服务器很可能已有 nginx/xray，选 18080 等非标准端口。已验证 18080 国内可访问。
+2. **Setup URI 中的 localhost:5984** → init 脚本默认生成本地地址，必须替换为 `http://IP:端口`。推荐直接用手动配置。
+3. **PowerShell 的 curl 不是真 curl** → Windows 测试端口用 `Test-NetConnection`，不是 `curl`。
+4. **Setup URI 粘贴截断** → 必须整行复制，半截断会报 "Failed to parse Setup-URI"。
+5. **E2EE 默认未启用** → 手动配置时要特意开启 `encrypt=true`。
+
+### 🟡 中频踩坑
+
+6. **旧配置缓存** → 改完设置后如果报错仍显示旧端口，重置 LiveSync 数据库或重启 Obsidian。
+7. **客户端选错角色** → 加入已有服务器时选 "Join"，不要选 "Primary device"（会覆盖服务器数据）。
+8. **容器里的 nginx ≠ 宿主机的 nginx** → 修改端口时不要搞混。
+
+### 🟢 低频踩坑
+
+9. **域名未解析就启动** → Caddy 无法申请 SSL 证书 → 用 IP:端口 先测试。
+10. **忘记 .env 中的密码** → 容器删除后无法登录 → 启动后立即记录密码。
+11. **手机无法连接** → 必须有合法 SSL 证书 → 必须用真实域名 + 公网 IP。
+12. **同步冲突** → LiveSync 自动处理，但大文件（>50MB）可能失败 → 拆分大附件。
+
+## 常见报错与解决
+
+| 报错 | 原因 | 解决 |
+|------|------|------|
+| Failed to parse Setup-URI | URI 没粘完被截断 | 从生成的 txt 文件整行复制 |
+| 连接显示 8080 / 连不上 | 旧配置未刷新 | 重置 LiveSync 设置后重新运行向导，或重启 Obsidian |
+| 401 Unauthorized | 用户名/密码错 | 检查 user 和 password 是否与 neverend-init 输出一致 |
+| 503 | 几乎不是服务器问题 | 关闭代理/VPN，检查 URI 端口是否正确 |
+| E2EE 不能解密 | 端到端加密未启用或 passphrase 错 | 确保 encrypt=true 且 passphrase 正确 |
+| 第一次同步后笔记乱了 | 设备角色选错 | 加入已有服务器时，不要选 "Setup as primary device" |
+
+## 服务端快速检查
+
+```bash
+# 进入 neverend 目录
+cd /home/ubuntu/neverend
+
+# 查看容器状态
+sudo docker compose ps
+
+# 本地验证 CouchDB 链路
+curl -s -o /dev/null -w "%{http_code}\n" http://user:PASSWORD@127.0.0.1:PORT/obsidian-livesync/
+
+# 服务器本地验证公网端口
+curl -s -o /dev/null -w "%{http_code}\n" --connect-timeout 5 http://$(curl -s ifconfig.me):PORT
+
+# 查看日志
+sudo docker logs --tail 50 neverend-caddy
+sudo docker logs --tail 50 neverend-couchdb
+```
+
+## 国内访问测试
+
+**必须从中国境内终端执行，服务器本地测试不能代替！**
+
+```bash
+# Windows PowerShell
+Test-NetConnection -ComputerName 服务器IP -Port 端口
+
+# macOS/Linux
+nc -vz 服务器IP 端口
+```
+
+## 验证清单
+
+部署完成后，逐项验证：
+
+- [ ] `neverend-caddy` 和 `neverend-couchdb` 容器都 Up
+- [ ] 本地 curl 返回 200 或 401
+- [ ] 从国内终端测试端口连通
+- [ ] Obsidian 手动配置填对 IP:端口
+- [ ] E2EE 启用，passphrase 正确
+- [ ] 同步成功，状态栏显示 Completed
+
+## 短期维护
+
+```bash
+# 重启服务
+cd /home/ubuntu/neverend && sudo docker compose restart
+
+# 查日志
+sudo docker logs --tail 50 neverend-caddy
+sudo docker logs --tail 50 neverend-couchdb
+
+# 更改端口
+# 修改 docker-compose.yml 中 caddy 的 ports 映射
+# 修改 conf/Caddyfile 中的 bind 和端口
+# 重新 docker compose up -d
+```
 
 ## 常见问题
 
@@ -84,6 +209,9 @@ A: 理论无上限。单文档限制 50MB，HTTP 请求限制 4GB。超大附件
 
 **Q: 服务器挂了笔记会丢吗？**
 A: 不会。每个设备本地都有完整副本，服务器只是同步中转。
+
+**Q: 80/443 端口被占用了怎么办？**
+A: 使用 `--port 18080` 参数，或修改 `.env` 中的 `NEVEREND_PORT=18080`。已验证 18080 国内可访问。
 
 ## 技术栈
 

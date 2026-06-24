@@ -28,8 +28,7 @@ services:
       couchdb:
         condition: service_healthy
     ports:
-      - "80:80"
-      - "443:443"
+      - "${NEVEREND_PORT:-80}:80"
     environment:
       - DOMAIN=${DOMAIN:-localhost}
     volumes:
@@ -49,6 +48,7 @@ services:
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD:-changeme}
       - COUCHDB_DBNAME=${COUCHDB_DBNAME:-obsidian-livesync}
       - DOMAIN=${DOMAIN:-localhost}
+      - NEVEREND_PORT=${NEVEREND_PORT:-80}
       - E2EE_PASSPHRASE=${E2EE_PASSPHRASE:-}
       - NEVEREND_USER=${NEVEREND_USER:-user}
       - NEVEREND_PASSWORD=${NEVEREND_PASSWORD:-password}

@@ -22,6 +22,7 @@ COUCHDB_USER = os.environ.get("COUCHDB_USER", "admin")
 COUCHDB_PASSWORD = os.environ.get("COUCHDB_PASSWORD", "changeme")
 COUCHDB_DBNAME = os.environ.get("COUCHDB_DBNAME", "obsidian-livesync")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
+PORT = os.environ.get("NEVEREND_PORT", "80")
 E2EE_PASSPHRASE = os.environ.get("E2EE_PASSPHRASE", "")
 NEVEREND_USER = os.environ.get("NEVEREND_USER", "user")
 NEVEREND_PASSWORD = os.environ.get("NEVEREND_PASSWORD", "password")
@@ -239,9 +240,15 @@ def generate_setup_uri():
     """Generate the obsidian://setuplivesync URI."""
     # Determine the server URL
     if DOMAIN == "localhost":
-        server_url = f"http://localhost:5984"
+        if PORT and PORT != "80":
+            server_url = f"http://localhost:{PORT}"
+        else:
+            server_url = f"http://localhost:5984"
     else:
-        server_url = f"https://{DOMAIN}"
+        if PORT and PORT != "80":
+            server_url = f"https://{DOMAIN}:{PORT}"
+        else:
+            server_url = f"https://{DOMAIN}"
 
     e2ee_passphrase = E2EE_PASSPHRASE or generate_passphrase()
     uri_passphrase = generate_passphrase()
@@ -302,9 +309,15 @@ def print_banner(uri, uri_pass, e2ee_pass):
     print("⚠️  请妥善保存以上口令！它们不会再次显示。")
     print()
     if DOMAIN != "localhost":
-        print(f"🌐 服务器地址：https://{DOMAIN}")
+        if PORT and PORT != "80":
+            print(f"🌐 服务器地址：https://{DOMAIN}:{PORT}")
+        else:
+            print(f"🌐 服务器地址：https://{DOMAIN}")
     else:
-        print(f"🌐 服务器地址：http://localhost:5984（仅限本机）")
+        if PORT and PORT != "80":
+            print(f"🌐 服务器地址：http://localhost:{PORT}（仅限本机）")
+        else:
+            print(f"🌐 服务器地址：http://localhost:5984（仅限本机）")
         print("   如需手机访问，请配置域名并修改 .env 中的 DOMAIN")
     print()
     print("=" * 60)
