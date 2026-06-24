@@ -1,0 +1,5 @@
+.env
+couchdb-data/
+couchdb-etc/
+*.log
+.git/

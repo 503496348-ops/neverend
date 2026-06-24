@@ -1,0 +1,62 @@
+# 无限循环 Neverend — Obsidian 一键自托管同步
+# 使用方法：修改 .env 文件后运行 docker compose up -d
+
+services:
+  couchdb:
+    image: couchdb:3
+    container_name: neverend-couchdb
+    restart: unless-stopped
+    environment:
+      - COUCHDB_USER=${COUCHDB_USER:-admin}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD:-changeme}
+    volumes:
+      - couchdb-data:/opt/couchdb/data
+      - ./conf/local.ini:/opt/couchdb/etc/local.ini
+    ports:
+      - "127.0.0.1:5984:5984"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5984/_up"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: neverend-caddy
+    restart: unless-stopped
+    depends_on:
+      couchdb:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+    volumes:
+      - ./conf/Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
+
+  init:
+    image: python:3.12-slim
+    container_name: neverend-init
+    depends_on:
+      couchdb:
+        condition: service_healthy
+    environment:
+      - COUCHDB_HOST=http://couchdb:5984
+      - COUCHDB_USER=${COUCHDB_USER:-admin}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD:-changeme}
+      - COUCHDB_DBNAME=${COUCHDB_DBNAME:-obsidian-livesync}
+      - DOMAIN=${DOMAIN:-localhost}
+      - E2EE_PASSPHRASE=${E2EE_PASSPHRASE:-}
+      - NEVEREND_USER=${NEVEREND_USER:-user}
+      - NEVEREND_PASSWORD=${NEVEREND_PASSWORD:-password}
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: ["python3", "/scripts/init_and_generate.py"]
+
+volumes:
+  couchdb-data:
+  caddy-data:
+  caddy-config:
