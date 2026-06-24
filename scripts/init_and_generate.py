@@ -173,8 +173,7 @@ def generate_passphrase():
 def encrypt_setup_config(config: dict, passphrase: str) -> str:
     """
     Encrypt LiveSync config for Setup URI.
-    Compatible with octagonal-wheels encryption format.
-    Uses PBKDF2-SHA256 + AES-256-GCM.
+    Uses PBKDF2-SHA256 + AES-256-GCM for AES-256 encryption.
     """
     try:
         from cryptography.hazmat.primitives.ciphers.aead import AESGCM
