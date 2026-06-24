@@ -50,6 +50,21 @@ scripts:
 
 ## Quick Start
 
+**一条命令安装（推荐）：**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/503496348-ops/neverend/main/install.sh | bash
+```
+
+脚本会自动完成：
+1. ✅ 检查/安装 Docker
+2. ✅ 克隆仓库
+3. ✅ 交互式配置（回车用默认值）
+4. ✅ 启动服务
+5. ✅ 输出 Setup URI
+
+**手动安装（进阶用户）：**
+
 ```bash
 # 1. 克隆仓库
 git clone https://github.com/503496348-ops/neverend.git
