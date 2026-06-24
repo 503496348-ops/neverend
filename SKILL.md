@@ -48,6 +48,61 @@ scripts:
 - 用户有自己的服务器/NAS/云主机
 - 用户想要笔记数据完全自控
 
+## Agent Workflow（智能体专用）
+
+**核心原则：用户只需要提供域名和密码，其余全部自动完成。**
+
+当用户说"帮我部署 Obsidian 同步"或类似意图时，按以下步骤执行：
+
+### Step 1: 收集信息（只需问 2 个问题）
+
+向用户确认：
+1. **域名**：是否有域名？（有→问域名；没有→用 localhost，仅桌面可用）
+2. **密码偏好**：自动生成还是自定义？
+
+### Step 2: 一键部署
+
+```bash
+# 有域名
+curl -fsSL https://raw.githubusercontent.com/503496348-ops/neverend/main/install.sh | bash -s -- --domain 用户的域名 --auto
+
+# 无域名（localhost）
+curl -fsSL https://raw.githubusercontent.com/503496348-ops/neverend/main/install.sh | bash -s -- --auto
+```
+
+### Step 3: 提取结果
+
+脚本输出包含 `---NEVEREND_OUTPUT_START---` 到 `---NEVEREND_OUTPUT_END---` 之间的结构化数据：
+```
+SETUP_URI=obsidian://setuplivesync?settings=...
+URI_PASSPHRASE=patient-haze
+E2EE_PASSPHRASE=icy-snow
+COUCHDB_PASSWORD=xxx
+```
+
+### Step 4: 告知用户
+
+向用户展示（不要展示技术细节）：
+1. **Setup URI**（一长串 obsidian:// 链接）
+2. **口令**（2-3 个英文单词）
+3. **Obsidian 操作步骤**（3 步）
+
+**不要展示给用户的内容：**
+- Docker 命令
+- .env 文件内容
+- CouchDB 配置
+- 任何技术术语
+
+### 脚本参数
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `--domain DOMAIN` | 域名 | localhost |
+| `--password PASS` | CouchDB 管理员密码 | 自动生成 |
+| `--sync-password PASS` | 同步用户密码 | 自动生成 |
+| `--e2ee PASSPHRASE` | 端到端加密口令 | 自动生成 |
+| `--auto` | 全自动，不弹确认 | — |
+
 ## Quick Start
 
 **一条命令安装（推荐）：**
