@@ -3,3 +3,4 @@ couchdb-data/
 couchdb-etc/
 *.log
 .git/
+__pycache__/
