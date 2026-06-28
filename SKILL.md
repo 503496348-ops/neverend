@@ -118,7 +118,18 @@ COUCHDB_PASSWORD=xxx
 | `--e2ee PASSPHRASE` | 端到端加密口令 | 自动生成 |
 | `--auto` | 全自动，不弹确认 | — |
 
-## Quick Start
+## 技术架构
+
+| 模块 | 实现 | 职责 |
+|------|------|------|
+| 工作流引擎 | `workflow.py` | 意图解析→路由→工具调用→反馈循环 |
+| 视频流水线 | `video_pipeline.py` (1088行) | FFmpeg渲染+字幕+平台适配 |
+| TTS后端 | CosyVoice集成 | 语音合成+声音克隆 |
+| 对话管理 | `conversation.py` | 多轮上下文+状态机 |
+
+Pipeline: 用户输入 → 意图解析 → 工具路由 → 执行 → 反馈循环
+
+## 快速开始
 
 **一条命令安装（推荐）：**
 
