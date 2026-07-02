@@ -8,6 +8,19 @@
 
 Neverend adds a knowledge-ingestion governance pack for teams that need to normalize local notes, classify documents, dry-run Wiki uploads, and audit knowledge-base structure before remote mutations. See `references/wiki-ingestion-governance.md`.
 
+### Vault Index & Link Health
+
+Run a local-first Markdown/Obsidian vault scan before sync migrations or Wiki uploads:
+
+```bash
+python3 scripts/vault_index.py /path/to/vault \
+  --db reports/vault.sqlite \
+  --json reports/vault.json \
+  --markdown reports/vault-health.md
+```
+
+The scanner extracts notes, aliases, tags, wiki links, Markdown links, broken links, and orphan notes. It writes an optional SQLite index plus JSON/Markdown reports without mutating the vault.
+
 ## 为什么需要它？
 
 | 方案 | 费用 | 难度 | 隐私 |

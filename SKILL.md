@@ -1,7 +1,7 @@
 ---
 name: neverend
-version: 1.2.0
-description: "无限循环——Obsidian一键自托管同步。docker compose up -d 即可拥有免费的跨设备笔记同步，替代Obsidian Sync($8/月)。"
+version: 1.3.0
+description: "无限循环——Obsidian一键自托管同步 + Markdown Vault 索引治理。部署 LiveSync 后可扫描双链、孤儿笔记、断链并生成 SQLite/JSON 健康报告。"
 author: AtomCollide-智械工坊团队
 license: Apache-2.0
 triggers:
@@ -21,6 +21,8 @@ triggers:
   - Markdown规范化
   - obsidian deploy
   - self-hosted sync
+  - vault index
+  - markdown link health
 metadata:
   hermes:
     author: AtomCollide-智械工坊团队
@@ -39,6 +41,7 @@ metadata:
       - PKM
 scripts:
   init: scripts/init_and_generate.py
+  vault_index: scripts/vault_index.py
 ---
 
 # 无限循环 Neverend
@@ -62,6 +65,7 @@ Neverend 现在不仅处理 Obsidian 同步部署，也可以作为知识资产�
 - **Markdown 规范化**：统一标题、空行、列表缩进、链接格式，同时保护代码块。
 - **Wiki 结构健康检查**：检测空分类、层级过深、命名不一致、孤儿节点与重复主题。
 - **回滚证据**：每次远程变更记录 node token/title/parent/operation，保证可审计。
+- **Vault 索引与双链健康检查**：扫描 Obsidian/Markdown vault，生成 SQLite/JSON/Markdown 报告，识别断链、孤儿笔记、标签与别名。
 
 执行细则见 `references/wiki-ingestion-governance.md`。
 
