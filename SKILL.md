@@ -1,6 +1,6 @@
 ---
 name: neverend
-version: 1.1.0
+version: 1.2.0
 description: "无限循环——Obsidian一键自托管同步。docker compose up -d 即可拥有免费的跨设备笔记同步，替代Obsidian Sync($8/月)。"
 author: AtomCollide-智械工坊团队
 license: Apache-2.0
@@ -15,13 +15,17 @@ triggers:
   - 跨设备同步
   - 无限循环
   - neverend
+  - 飞书知识库整理
+  - 文档智能归档
+  - Wiki结构健康检查
+  - Markdown规范化
   - obsidian deploy
   - self-hosted sync
 metadata:
   hermes:
     author: AtomCollide-智械工坊团队
     created: 2026-06-24
-    updated: 2026-06-25
+    updated: 2026-07-02
     maturity: production
     category: productivity
     tags:
@@ -47,6 +51,19 @@ scripts:
 - 用户不想付费 Obsidian Sync
 - 用户有自己的服务器/NAS/云主机
 - 用户想要笔记数据完全自控
+
+
+## Knowledge Ingestion Governance（新增）
+
+Neverend 现在不仅处理 Obsidian 同步部署，也可以作为知识资产入库治理入口：
+
+- **语义分类计划**：为 Markdown/PDF/笔记文件生成目标知识路径、置信度与理由。
+- **Dry-run 上传清单**：所有远程创建、上传、移动前先生成 manifest，用户确认后才执行。
+- **Markdown 规范化**：统一标题、空行、列表缩进、链接格式，同时保护代码块。
+- **Wiki 结构健康检查**：检测空分类、层级过深、命名不一致、孤儿节点与重复主题。
+- **回滚证据**：每次远程变更记录 node token/title/parent/operation，保证可审计。
+
+执行细则见 `references/wiki-ingestion-governance.md`。
 
 ## Agent Workflow（智能体专用）
 

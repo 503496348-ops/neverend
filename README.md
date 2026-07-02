@@ -4,6 +4,10 @@
 
 > `curl -fsSL .../install.sh | bash` 即可拥有免费的跨设备笔记同步
 
+## Knowledge Ingestion Governance
+
+Neverend adds a knowledge-ingestion governance pack for teams that need to normalize local notes, classify documents, dry-run Wiki uploads, and audit knowledge-base structure before remote mutations. See `references/wiki-ingestion-governance.md`.
+
 ## 为什么需要它？
 
 | 方案 | 费用 | 难度 | 隐私 |
