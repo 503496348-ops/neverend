@@ -464,3 +464,7 @@ sudo docker logs --tail 50 neverend-couchdb
 - 无限循环新增 Bridge Session Asset Index：把 bridge scope/agent/cwd/policy/transcript 变成可索引会话资产。
 - 新增模块：`scripts/bridge_session_assets.py`
 - 来源模式：飞书/Lark 消息入口、本地 Claude/Codex 执行、会话 fingerprint、profile 隔离与安全门禁。
+
+## Generic orchestration audit timeline
+
+Adds timeline normalization for flow logs so runtime decisions, state transitions, reviews, and final outputs can be archived as durable knowledge assets.
