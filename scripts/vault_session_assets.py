@@ -1,4 +1,4 @@
-"""Session asset indexing for bridge-driven conversations."""
+"""Session asset indexing for NeverEnd vault-backed conversations."""
 from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256

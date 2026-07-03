@@ -1,4 +1,4 @@
-from scripts.bridge_session_assets import BridgeSessionAsset, BridgeSessionAssetIndex, build_markdown_manifest
+from scripts.vault_session_assets import BridgeSessionAsset, BridgeSessionAssetIndex, build_markdown_manifest
 
 
 def test_bridge_session_asset_index_detects_stale_policy():

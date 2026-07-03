@@ -1,13 +1,18 @@
 {
   "repo": "neverend",
   "entrypoints": [
-    "install.sh"
+    "install.sh",
+    "scripts/sync_auditor.py",
+    "scripts/vault_index.py",
+    "scripts/real_sync_harness.py"
   ],
   "smoke_targets": [
     "scripts/healthcheck.py",
-    "scripts/product_convergence_gate.py",
     "scripts/real_sync_harness.py",
-    "scripts/sync_auditor.py"
+    "scripts/sync_auditor.py",
+    "scripts/vault_sync_audit_timeline.py",
+    "scripts/vault_session_assets.py",
+    "scripts/product_convergence_gate.py"
   ],
   "known_external_reference_files": [
     "README.md",
@@ -18,5 +23,9 @@
     "scripts/product_convergence_gate.py",
     "scripts/setup_wizard.py"
   ],
-  "policy": "External/fusion references are allowed only when explicitly reviewed here; new fusion work must add a smoke target or entrypoint wiring."
+  "policy": "Cross-cutting runtime/bridge/workflow modules must be domain-mapped and referenced by declared entrypoints or smoke targets; generic orphan modules fail the convergence gate.",
+  "domain_mappings": {
+    "scripts/vault_sync_audit_timeline.py": "NeverEnd vault sync audit timeline for durable memory evidence",
+    "scripts/vault_session_assets.py": "NeverEnd vault session asset manifest for transcript and policy snapshots"
+  }
 }

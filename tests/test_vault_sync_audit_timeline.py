@@ -1,4 +1,4 @@
-from scripts.orchestration_audit_timeline import normalize_flow_entries, timeline_to_jsonable
+from scripts.vault_sync_audit_timeline import normalize_flow_entries, timeline_to_jsonable
 
 
 def test_normalize_flow_entries_sorts_and_preserves_reason():

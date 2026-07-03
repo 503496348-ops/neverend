@@ -118,7 +118,7 @@ COUCHDB_PASSWORD=xxx
 | Remote Database URI | `http://IP:端口` |
 | Username | `user` |
 | Password | `（生成的密码）` |
-| Database Name | `obsidian-livesync` |
+| Database Name | `neverend-vault-sync` |
 | End-to-End Encryption | `true` |
 | Passphrase | `（生成的 E2EE 口令）` |
 
@@ -215,7 +215,7 @@ cp .env.example .env
 
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
-| `COUCHDB_DBNAME` | 数据库名 | `obsidian-livesync` |
+| `COUCHDB_DBNAME` | 数据库名 | `neverend-vault-sync` |
 | `E2EE_PASSPHRASE` | 端到端加密口令 | 自动生成 |
 | `NEVEREND_USER` | 同步用户名 | `user` |
 | `NEVEREND_PASSWORD` | 同步密码 | `password` |
@@ -266,7 +266,7 @@ obsidian://setuplivesync?settings=...
 | Remote Database URI | `http://你的IP:端口` |
 | Username | `user` |
 | Password | `（密码）` |
-| Database Name | `obsidian-livesync` |
+| Database Name | `neverend-vault-sync` |
 | End-to-End Encryption | `true` |
 | Passphrase | `（E2EE 口令）` |
 
@@ -336,7 +336,7 @@ cd /home/ubuntu/neverend
 sudo docker compose ps
 
 # 本地验证 CouchDB 链路
-curl -s -o /dev/null -w "%{http_code}\n" http://user:PASSWORD@127.0.0.1:PORT/obsidian-livesync/
+curl -s -o /dev/null -w "%{http_code}\n" http://user:<redacted>@127.0.0.1:PORT/neverend-vault-sync/
 
 # 服务器本地验证公网端口
 curl -s -o /dev/null -w "%{http_code}\n" --connect-timeout 5 http://$(curl -s ifconfig.me):PORT
@@ -459,12 +459,11 @@ sudo docker logs --tail 50 neverend-couchdb
 - `tests/test_one_click_open_box.py`：契约测试，防止 README 写了但脚本缺失。
 
 
-## Lark Coding Agent Bridge 融合增强
+## Vault session asset index
 
-- 无限循环新增 Bridge Session Asset Index：把 bridge scope/agent/cwd/policy/transcript 变成可索引会话资产。
-- 新增模块：`scripts/bridge_session_assets.py`
-- 来源模式：飞书/Lark 消息入口、本地 Claude/Codex 执行、会话 fingerprint、profile 隔离与安全门禁。
-
-## Generic orchestration audit timeline
+- 无限循环新增 Vault Session Asset Index：把 vault scope/agent/cwd/policy/transcript 变成可索引会话资产。
+- 新增模块：`scripts/vault_session_assets.py`
+- 
+## Vault sync audit timeline
 
 Adds timeline normalization for flow logs so runtime decisions, state transitions, reviews, and final outputs can be archived as durable knowledge assets.

@@ -1,4 +1,4 @@
-"""Build durable timelines from generic orchestration audit data."""
+"""Build durable timelines from NeverEnd vault sync audit data."""
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict

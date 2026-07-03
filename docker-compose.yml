@@ -46,7 +46,7 @@ services:
       - COUCHDB_HOST=http://couchdb:5984
       - COUCHDB_USER=${COUCHDB_USER:-admin}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD:-changeme}
-      - COUCHDB_DBNAME=${COUCHDB_DBNAME:-obsidian-livesync}
+      - COUCHDB_DBNAME=${COUCHDB_DBNAME:-neverend-vault-sync}
       - DOMAIN=${DOMAIN:-localhost}
       - NEVEREND_PORT=${NEVEREND_PORT:-80}
       - E2EE_PASSPHRASE=${E2EE_PASSPHRASE:-}

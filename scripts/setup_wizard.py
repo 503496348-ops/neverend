@@ -125,7 +125,7 @@ COUCHDB_USER={couch_user}
 COUCHDB_PASSWORD={couch_password}
 
 # 数据库名
-COUCHDB_DBNAME=obsidian-livesync
+COUCHDB_DBNAME=neverend-vault-sync
 
 # 端到端加密口令
 E2EE_PASSPHRASE={e2ee_passphrase}

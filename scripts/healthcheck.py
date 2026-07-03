@@ -13,7 +13,7 @@ import urllib.error
 COUCHDB_HOST = os.environ.get("COUCHDB_HOST", "http://localhost:5984")
 COUCHDB_USER = os.environ.get("COUCHDB_USER", "admin")
 COUCHDB_PASSWORD = os.environ.get("COUCHDB_PASSWORD", "changeme")
-COUCHDB_DBNAME = os.environ.get("COUCHDB_DBNAME", "obsidian-livesync")
+COUCHDB_DBNAME = os.environ.get("COUCHDB_DBNAME", "neverend-vault-sync")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
 
 
