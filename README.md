@@ -367,3 +367,8 @@ AtomCollide-智械工坊团队出品。更多产品见：[AtomCollide Product Ma
 - [CONTRIBUTING](CONTRIBUTING.md)
 
 
+
+## 2026-07-03 运行时增强
+
+- 新增真实知识库同步验收 harness：生成文件哈希快照、比较增删改、输出可审计 manifest。
+- 交付物包含可导入模块与定向单元测试。

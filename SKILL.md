@@ -1,6 +1,6 @@
 ---
 name: neverend
-version: 1.3.0
+version: 1.4.0
 description: "无限循环——Obsidian一键自托管同步 + Markdown Vault 索引治理。部署 LiveSync 后可扫描双链、孤儿笔记、断链并生成 SQLite/JSON 健康报告。"
 author: AtomCollide-智械工坊团队
 license: Apache-2.0
@@ -437,3 +437,8 @@ sudo docker logs --tail 50 neverend-couchdb
 # 修改 conf/Caddyfile 中的 bind 和端口
 # 重新 docker compose up -d
 ```
+
+## 2026-07-03 运行时增强
+
+- 新增真实知识库同步验收 harness：生成文件哈希快照、比较增删改、输出可审计 manifest。
+- 验证：新增模块通过 py_compile 和定向 pytest，代码不依赖外部服务。
