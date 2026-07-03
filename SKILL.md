@@ -442,3 +442,8 @@ sudo docker logs --tail 50 neverend-couchdb
 
 - 新增真实知识库同步验收 harness：生成文件哈希快照、比较增删改、输出可审计 manifest。
 - 验证：新增模块通过 py_compile 和定向 pytest，代码不依赖外部服务。
+
+## 2026-07-03 产品收敛门禁
+
+- 新增 `scripts/product_convergence_gate.py`：从远端干净 clone 后可运行 `python3 scripts/product_convergence_gate.py --json`，检查 SKILL/README、入口文件、smoke 目标、测试与外部融合引用是否自洽。
+- 新增 `tests/test_product_convergence_gate.py`：确保门禁在产品仓库中真实可执行，避免后续增强只停留在孤岛模块。

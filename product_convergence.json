@@ -1,0 +1,22 @@
+{
+  "repo": "neverend",
+  "entrypoints": [
+    "install.sh"
+  ],
+  "smoke_targets": [
+    "scripts/healthcheck.py",
+    "scripts/product_convergence_gate.py",
+    "scripts/real_sync_harness.py",
+    "scripts/sync_auditor.py"
+  ],
+  "known_external_reference_files": [
+    "README.md",
+    "SKILL.md",
+    "scripts/backup.py",
+    "scripts/healthcheck.py",
+    "scripts/init_and_generate.py",
+    "scripts/product_convergence_gate.py",
+    "scripts/setup_wizard.py"
+  ],
+  "policy": "External/fusion references are allowed only when explicitly reviewed here; new fusion work must add a smoke target or entrypoint wiring."
+}
