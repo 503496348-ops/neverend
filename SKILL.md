@@ -1,6 +1,6 @@
 ---
 name: neverend
-version: 1.4.0
+version: 1.5.0
 description: "无限循环——Obsidian一键自托管同步 + Markdown Vault 索引治理。部署 LiveSync 后可扫描双链、孤儿笔记、断链并生成 SQLite/JSON 健康报告。"
 author: AtomCollide-智械工坊团队
 license: Apache-2.0
@@ -45,6 +45,10 @@ scripts:
 ---
 
 # 无限循环 Neverend
+
+## Real Vault Sync Acceptance（v1.5.0）
+
+新增 `scripts/obsidian_sync_acceptance.py`：对真实 Markdown vault 与副本生成哈希快照，检测新增/删除/变更、文件名冲突与合并冲突标记，用确定性 harness 验收同步一致性。
 
 **Obsidian 一键自托管同步——替代 $8/月的 Obsidian Sync**
 
