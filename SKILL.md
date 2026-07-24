@@ -55,3 +55,13 @@ python3 scripts/cli.py health
 ```bash
 python3 -m pytest tests/ -q
 ```
+
+## DNA Memory 融合（Obsidian真源+有界采集）
+
+基于 [DNA Memory](https://github.com/AIPMAndy/dna-memory) Markdown真源模式增强：
+- Markdown为唯一长期真源，SQLite为可重建索引
+- YAML frontmatter元数据（type/confidence/source/created/supersedes）
+- 有界采集规则（session ID+路径+哈希+偏移+计数）
+- Vault同步审计（孤儿索引/幽灵文件/过期记忆检测）
+
+详见 `references/dna-memory-obsidian-pattern.md`
