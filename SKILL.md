@@ -1,6 +1,10 @@
 ---
 name: neverend
 description: "知识库管理工具 — Obsidian Vault 索引构建、备份、同步审计"
+license: MIT
+metadata:
+  author: 503496348-ops
+  version: 1.0.0
 triggers:
   - "知识库"
   - "vault"
