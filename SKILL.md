@@ -5,16 +5,18 @@ license: MIT
 metadata:
   author: 503496348-ops
   version: 1.0.0
-triggers:
-  - "知识库"
-  - "vault"
-  - "备份"
-  - "索引"
-  - "同步审计"
-  - "obsidian"
 ---
 
 # Neverend — 知识库管理工具
+
+## 触发条件
+
+- "知识库"
+- "vault"
+- "备份"
+- "索引"
+- "同步审计"
+- "obsidian"
 
 为 Obsidian Vault 提供索引构建、增量备份和同步审计能力。
 
