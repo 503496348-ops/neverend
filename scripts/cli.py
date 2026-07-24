@@ -3,13 +3,13 @@
 import argparse, json, sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-def cmd_index(args):
+def cmd_index(args) -> None:
     """Build vault index from markdown files."""
     from scripts.vault_index import build_vault_index
     result = build_vault_index(args.vault_path)
     print(json.dumps({"notes": len(result.notes) if hasattr(result, 'notes') else 0, "status": "ok"}, ensure_ascii=False))
 
-def cmd_backup(args):
+def cmd_backup(args) -> None:
     """Run vault backup."""
     from scripts.backup import backup_full, backup_incremental
     if args.incremental:
@@ -18,7 +18,7 @@ def cmd_backup(args):
         result = backup_full(args.source, args.dest)
     print(json.dumps({"status": "ok", "mode": "incremental" if args.incremental else "full"}, ensure_ascii=False))
 
-def cmd_health(args):
+def cmd_health(args) -> None:
     """Run health check."""
     from scripts.healthcheck import check_couchdb, check_ssl
     results = {"couchdb": "ok", "ssl": "ok"}
@@ -32,7 +32,7 @@ def cmd_health(args):
         results["ssl"] = f"error: {e}"
     print(json.dumps(results, ensure_ascii=False, indent=2))
 
-def cmd_audit(args):
+def cmd_audit(args) -> None:
     """Audit vault docs."""
     from scripts.sync_auditor import audit_file, iter_docs
     count = 0
@@ -41,10 +41,10 @@ def cmd_audit(args):
     print(json.dumps({"docs_audited": count, "status": "ok"}, ensure_ascii=False))
 
 
-def cmd_info(args):
+def cmd_info(args) -> None:
     """Show product info."""
     print(json.dumps({"product": "Neverend", "type": "知识库管理工具", "status": "ok"}, ensure_ascii=False, indent=2))
-def main():
+def main() -> None:
     p = argparse.ArgumentParser(description='Neverend 知识管理工具')
     sub = p.add_subparsers(dest='command')
 
