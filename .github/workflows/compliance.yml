@@ -45,7 +45,7 @@ jobs:
           echo "✅ Clean"
 
       - name: Ruff lint (errors only)
-        run: ruff check . --select E9,F63,F7,F82 --show-source
+        run: ruff check . --select E9,F63,F7,F82
 
       - name: CLI smoke test
         run: python scripts/cli.py --help
