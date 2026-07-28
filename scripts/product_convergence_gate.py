@@ -72,7 +72,8 @@ def audit(root: Path) -> dict[str, Any]:
         text = skill.read_text(encoding="utf-8", errors="ignore")
         if not text.startswith("---"):
             issues.append({"rule": "SKILL_002", "message": "SKILL.md frontmatter missing"})
-        if "triggers:" not in text:
+        has_trigger_section = "triggers:" in text or bool(re.search(r"^##\s*触发条件\s*$", text, re.M))
+        if not has_trigger_section:
             issues.append({"rule": "SKILL_003", "message": "SKILL.md triggers missing"})
     if len(code_files) < 1:
         issues.append({"rule": "CODE_001", "message": "no source code files found"})

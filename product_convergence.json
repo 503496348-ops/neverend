@@ -26,6 +26,7 @@
   ],
   "policy": "Cross-cutting runtime/bridge/workflow modules must be domain-mapped and referenced by declared entrypoints or smoke targets; generic orphan modules fail the convergence gate.",
   "domain_mappings": {
+    "scripts/real_sync_harness.py": "NeverEnd executable dual-vault disconnect, restart and post-reconnect replication acceptance",
     "scripts/vault_sync_audit_timeline.py": "NeverEnd vault sync audit timeline for durable memory evidence",
     "scripts/vault_session_assets.py": "NeverEnd vault session asset manifest for transcript and policy snapshots",
     "scripts/markdown_sot_index_health.py": "Markdown SoT memory frontmatter protocol health (clients/status/supersedes/cognitive_type)"
