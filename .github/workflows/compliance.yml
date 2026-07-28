@@ -52,7 +52,7 @@ jobs:
 
       - name: Type hints check (CLI)
         run: |
-          if ! grep -q "-> " scripts/cli.py; then
+          if ! grep -q -- "-> " scripts/cli.py; then
             echo "❌ scripts/cli.py missing type hints"
             exit 1
           fi
