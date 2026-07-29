@@ -56,6 +56,23 @@ python3 scripts/cli.py health
 python3 -m pytest tests/ -q
 ```
 
+## 双 Vault 断线重连验收
+
+`scripts/real_sync_harness.py` 用真实的一次性同步、故障注入和重启命令验证：
+初次复制、断线后写入、重启后复制，以及探针删除传播。命令参数支持
+`{source}`/`{replica}` 占位符，始终以 `shell=False` 执行。
+
+```bash
+python3 scripts/real_sync_harness.py /vault-a /vault-b \
+  --sync-command 'sync-client --once {source} {replica}' \
+  --fault-command 'systemctl stop sync-client' \
+  --restart-command 'systemctl restart sync-client' \
+  --json-output reconnect-evidence.json
+```
+
+该验收会短暂写入 `.neverend-smoke/` 探针，并通过最后一次同步验证删除传播；
+请仅对测试 Vault 或已授权的验收环境运行。
+
 ## DNA Memory 融合（Obsidian真源+有界采集）
 
 基于 [DNA Memory](https://github.com/AIPMAndy/dna-memory) Markdown真源模式增强：

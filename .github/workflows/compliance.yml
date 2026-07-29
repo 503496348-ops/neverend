@@ -45,14 +45,14 @@ jobs:
           echo "✅ Clean"
 
       - name: Ruff lint (errors only)
-        run: ruff check . --select E9,F63,F7,F82 --show-source
+        run: ruff check . --select E9,F63,F7,F82
 
       - name: CLI smoke test
         run: python scripts/cli.py --help
 
       - name: Type hints check (CLI)
         run: |
-          if ! grep -q "-> " scripts/cli.py; then
+          if ! grep -q -- "-> " scripts/cli.py; then
             echo "❌ scripts/cli.py missing type hints"
             exit 1
           fi
